@@ -1,0 +1,38 @@
+image:
+  repository: service3-embed
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+milvus:
+  host: milvus
+  port: 19530
+
+s3:
+  endpoint_url: http://minio:9000
+  access_key: minioadmin
+  secret_key: minioadmin
+  bucket: service3
+
+embedding:
+  mode: local        # or "openai"
+  openai:
+    api_key: ""
+  local:
+    model_name: intfloat/e5-large-v2
+
+analysis:
+  spacy_model: en_core_web_sm
+  topic_modeling:
+    num_topics: 5
+
+perplexity:
+  api_url: https://api.perplexity.ai/v1/answer
+  api_key: ""
+
+spotify:
+  client_id: ""
+  client_secret: ""

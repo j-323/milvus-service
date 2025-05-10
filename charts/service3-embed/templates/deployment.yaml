@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "service3-embed.fullname" . }}
+  labels:
+    app: {{ include "service3-embed.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "service3-embed.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "service3-embed.name" . }}
+    spec:
+      containers:
+        - name: service3-embed
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MILVUS_HOST
+              value: "{{ .Values.milvus.host }}"
+            - name: MILVUS_PORT
+              value: "{{ .Values.milvus.port }}"
+            - name: S3_ENDPOINT_URL
+              value: "{{ .Values.s3.endpoint_url }}"
+            - name: S3_ACCESS_KEY
+              value: "{{ .Values.s3.access_key }}"
+            - name: S3_SECRET_KEY
+              value: "{{ .Values.s3.secret_key }}"
+            - name: S3_BUCKET
+              value: "{{ .Values.s3.bucket }}"
+            - name: EMBEDDING_MODE
+              value: "{{ .Values.embedding.mode }}"
+            - name: OPENAI_API_KEY
+              value: "{{ .Values.embedding.openai.api_key }}"
+            - name: LOCAL_MODEL_NAME
+              value: "{{ .Values.embedding.local.model_name }}"
+            - name: ANALYSIS_SPACY_MODEL
+              value: "{{ .Values.analysis.spacy_model }}"
+            - name: ANALYSIS_NUM_TOPICS
+              value: "{{ .Values.analysis.topic_modeling.num_topics }}"
+            - name: PERPLEXITY_API_URL
+              value: "{{ .Values.perplexity.api_url }}"
+            - name: PERPLEXITY_API_KEY
+              value: "{{ .Values.perplexity.api_key }}"
+            - name: SPOTIFY_CLIENT_ID
+              value: "{{ .Values.spotify.client_id }}"
+            - name: SPOTIFY_CLIENT_SECRET
+              value: "{{ .Values.spotify.client_secret }}"
+          ports:
+            - containerPort: {{ .Values.service.port }}
